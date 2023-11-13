@@ -94,7 +94,7 @@ Additionally, every time a move is executed, ChessMaster provides a comprehensiv
 </tr>
 <tr>
 <td>
-  
+
 <pre><code>
 move d2 d4
 _________________________________________________________________
@@ -291,149 +291,152 @@ Objective:
 _________________________________________________________________
 ```
 
-#### Further details of special rules
+#### 1. Castling
 
-1. Castling
+For the move to be valid:
+- It's the king's first move. 
+- It's the rook's first move. 
+- There are no pieces between the king and the rook. 
+- The king is not in check and the king will not be in check after castling
 
-   For the move to be valid:
-   - It's the king's first move. 
-   - It's the rook's first move. 
-   - There are no pieces between the king and the rook. 
-   - The king is not in check and the king will not be in check after castling
+To perform castling on either sides:
+- Move your king two squares to the right/left (towards the rook).
+- The rook will jump over the king and land on the square next to the king.
+
+Examples and expected output:
+
+<table>
+<tr>
+    <th>Castling availability: <code>moves e1</code></th>
+    <th>Execute castle move: <code>moves e1 c1</code></th>
+</tr>
+<tr>
+<td>
+
+<pre><code>             (a) (b) (c) (d) (e) (f) (g) (h)
+            _________________________________
+        (8) | R |   |   |   | K |   |   | R | (8)
+            _________________________________
+        (7) | P | P | P |   |   |   | P | P | (7)
+            _________________________________
+        (6) |   |   |   |   |   |   |   |   | (6)
+            _________________________________
+        (5) |   |   | q |   |   | P |   |   | (5)
+            _________________________________
+        (4) |   |   |   |   |   | p |   |   | (4)
+            _________________________________
+        (3) |   |   | n |   |   |   |   |   | (3)
+            _________________________________
+        (2) | B | p |   |[.]|[.]| p | p | p | (2)
+            _________________________________
+        (1) | r |   |[.]|[.]|{k}| b | n | r | (1)
+            _________________________________
+             (a) (b) (c) (d) (e) (f) (g) (h)
+
+_________________________________________________________________
+
+Available coordinates for King at e1:
+e2 d1 d2 c1
+_________________________________________________________________</code></pre>
+
+</td>
+<td>
+
+<pre><code>_________________________________________________________________
+
+You moved King from e1 to c1
+_________________________________________________________________
+
+             (a) (b) (c) (d) (e) (f) (g) (h)
+            _________________________________
+        (8) | R |   |   |   | K |   |   | R | (8)
+            _________________________________
+        (7) | P | P | P |   |   |   | P | P | (7)
+            _________________________________
+        (6) |   |   |   |   |   |   |   |   | (6)
+            _________________________________
+        (5) |   |   | q |   |   | P |   |   | (5)
+            _________________________________
+        (4) |   |   |   |   |   | p |   |   | (4)
+            _________________________________
+        (3) |   |   | n |   |   |   |   |   | (3)
+            _________________________________
+        (2) | B | p |   |   |   | p | p | p | (2)
+            _________________________________
+        (1) |   |   |(k)| r |( )| b | n | r | (1)
+            _________________________________
+             (a) (b) (c) (d) (e) (f) (g) (h)</code></pre>
+
+</td>
+</tr>
+</table>
+
+#### 2. En Passant:
    
-   To perform castling on either sides:
-    - Move your king two squares to the right/left (towards the rook).
-    - The rook will jump over the king and land on the square next to the king.
+This move only happens when your opponent moves their pawn two squares forward from its starting position and lands next to your pawn.
+To capture en passant, you must do it on your very next move. 
+- Move your pawn diagonally forward to the square that your opponent's pawn would have occupied if it had moved only one square forward.
 
-   Example of castling availability:  `moves e1`
+<table>
+<tr>
+    <th>Sample board before en passant</th>
+    <th>Executing en passant move: <code>move d5 e6</code></th>
+</tr>
+<tr>
+<td>
 
-   Expected Output:
+<pre><code>_________________________________________________________________
 
-   <pre><code>
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-                _________________________________
-            (8) | R |   |   |   | K |   |   | R | (8)
-                _________________________________
-            (7) | P | P | P |   |   |   | P | P | (7)
-                _________________________________
-            (6) |   |   |   |   |   |   |   |   | (6)
-                _________________________________
-            (5) |   |   | q |   |   | P |   |   | (5)
-                _________________________________
-            (4) |   |   |   |   |   | p |   |   | (4)
-                _________________________________
-            (3) |   |   | n |   |   |   |   |   | (3)
-                _________________________________
-            (2) | B | p |   |[.]|[.]| p | p | p | (2)
-                _________________________________
-            (1) | r |   |[.]|[.]|{k}| b | n | r | (1)
-                _________________________________
-                 (a) (b) (c) (d) (e) (f) (g) (h)
+ChessMaster moved Pawn from e7 to e5
+_________________________________________________________________
 
-   _________________________________________________________________
+             (a) (b) (c) (d) (e) (f) (g) (h)
+            _________________________________
+        (8) | R |   | B | Q | K | B |   | R | (8)
+            _________________________________
+        (7) | P | P | P | P |( )| P | P | P | (7)
+            _________________________________
+        (6) |   |   | N |   |   |   |   |   | (6)
+            _________________________________
+        (5) |   |   |   | p |(P)|   |   |   | (5)
+            _________________________________
+        (4) |   |   |   |   |   |   |   |   | (4)
+            _________________________________
+        (3) |   |   |   |   |   |   |   |   | (3)
+            _________________________________
+        (2) | p | p |   |   | p | p | p | p | (2)
+            _________________________________
+        (1) | r | n | b | q | k | b | n | r | (1)
+            _________________________________
+             (a) (b) (c) (d) (e) (f) (g) (h)</code></pre>
 
-   Available coordinates for King at e1:
-   e2 d1 d2 c1
-   _________________________________________________________________
-   </code></pre>
+</td>
+<td>
 
-   Example:  `move e1 c1`
+<pre><code>
+             (a) (b) (c) (d) (e) (f) (g) (h)
+            _________________________________
+        (8) | R |   | B | Q | K | B |   | R | (8)
+            _________________________________
+        (7) | P | P | P | P |   | P | P | P | (7)
+            _________________________________
+        (6) |   |   | N |   |(p)|   |   |   | (6)
+            _________________________________
+        (5) |   |   |   |( )|   |   |   |   | (5)
+            _________________________________
+        (4) |   |   |   |   |   |   |   |   | (4)
+            _________________________________
+        (3) |   |   |   |   |   |   |   |   | (3)
+            _________________________________
+        (2) | p | p |   |   | p | p | p | p | (2)
+            _________________________________
+        (1) | r | n | b | q | k | b | n | r | (1)
+            _________________________________
+             (a) (b) (c) (d) (e) (f) (g) (h)</code></pre>
 
-   Expected Output:
-
-   <pre><code>
-   _________________________________________________________________
-
-   You moved King from e1 to c1
-   _________________________________________________________________
-
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-                _________________________________
-            (8) | R |   |   |   | K |   |   | R | (8)
-                _________________________________
-            (7) | P | P | P |   |   |   | P | P | (7)
-                _________________________________
-            (6) |   |   |   |   |   |   |   |   | (6)
-                _________________________________
-            (5) |   |   | q |   |   | P |   |   | (5)
-                _________________________________
-            (4) |   |   |   |   |   | p |   |   | (4)
-                _________________________________
-            (3) |   |   | n |   |   |   |   |   | (3)
-                _________________________________
-            (2) | B | p |   |   |   | p | p | p | (2)
-                _________________________________
-            (1) |   |   |(k)| r |( )| b | n | r | (1)
-                _________________________________
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-    </code></pre>
-
-2. En Passant:
-   
-   This move only happens when your opponent moves their pawn two squares forward from its starting position and lands next to your pawn.
-   To capture en passant, you must do it on your very next move. 
-   - Move your pawn diagonally forward to the square that your opponent's pawn would have occupied if it had moved only one square forward.
-
-   Sample previous board: 
-   
-   <pre><code>
-   _________________________________________________________________
-
-   ChessMaster moved Pawn from e7 to e5
-   _________________________________________________________________
-
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-                _________________________________
-            (8) | R |   | B | Q | K | B |   | R | (8)
-                _________________________________
-            (7) | P | P | P | P |( )| P | P | P | (7)
-                _________________________________
-            (6) |   |   | N |   |   |   |   |   | (6)
-                _________________________________
-            (5) |   |   |   | p |(P)|   |   |   | (5)
-                _________________________________
-            (4) |   |   |   |   |   |   |   |   | (4)
-                _________________________________
-            (3) |   |   |   |   |   |   |   |   | (3)
-                _________________________________
-            (2) | p | p |   |   | p | p | p | p | (2)
-                _________________________________
-            (1) | r | n | b | q | k | b | n | r | (1)
-                _________________________________
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-   </code></pre>
-
-   Example: `move d5 e6`
-
-   Expected output:
-
-   <pre><code>
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-                _________________________________
-            (8) | R |   | B | Q | K | B |   | R | (8)
-                _________________________________
-            (7) | P | P | P | P |   | P | P | P | (7)
-                _________________________________
-            (6) |   |   | N |   |(p)|   |   |   | (6)
-                _________________________________
-            (5) |   |   |   |( )|   |   |   |   | (5)
-                _________________________________
-            (4) |   |   |   |   |   |   |   |   | (4)
-                _________________________________
-            (3) |   |   |   |   |   |   |   |   | (3)
-                _________________________________
-            (2) | p | p |   |   | p | p | p | p | (2)
-                _________________________________
-            (1) | r | n | b | q | k | b | n | r | (1)
-                _________________________________
-                 (a) (b) (c) (d) (e) (f) (g) (h)
-
-   _________________________________________________________________
-
-   Available coordinates for Pawn at d5:
-   e6 c6 d6
-   _________________________________________________________________
-   </code></pre>
+</td>
+</tr>
+</table>
 
 ### Show commands: `help`
 
@@ -564,7 +567,6 @@ Stepped back 2 steps!
 Use `show` to see the current board.
 _________________________________________________________________
 ```
-
 
 ### List pieces in play: `captured`
 
